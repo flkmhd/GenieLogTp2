@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="StatementPrinterTests" tests="1" skipped="0" failures="0" errors="0" timestamp="2023-10-30T19:29:38" hostname="DESKTOP-G1D1P25" time="0.212">
+<testsuite name="StatementPrinterTests" tests="3" skipped="0" failures="0" errors="0" timestamp="2023-10-30T19:36:26" hostname="DESKTOP-G1D1P25" time="0.223">
   <properties/>
-  <testcase name="exampleStatement()" classname="StatementPrinterTests" time="0.212"/>
+  <testcase name="testAudience20ForComedy()" classname="StatementPrinterTests" time="0.047"/>
+  <testcase name="exampleStatement()" classname="StatementPrinterTests" time="0.173"/>
+  <testcase name="testAudience30ForTragedy()" classname="StatementPrinterTests" time="0.001"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>
