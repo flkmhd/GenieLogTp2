@@ -8,6 +8,7 @@ public class HtmlStatementPrinter {
         double totalAmount = 0.0;
         int volumeCredits = 0;
         StringBuilder result = new StringBuilder();
+        Customer customer = invoice.getCustomer();
 
         result.append("<html><head><title>Invoice</title></head><body>");
         result.append("<style>");
@@ -20,7 +21,7 @@ public class HtmlStatementPrinter {
         result.append("</style>");
         result.append("<h1>Invoice</h1>");
 
-        result.append("<p><b>Client:</b> " + invoice.customer + "</p>");
+        result.append("<p><b>Client:</b> " + invoice.customer.getName() + "</p>");
 
         NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(Locale.US);
 
@@ -58,14 +59,23 @@ public class HtmlStatementPrinter {
                 volumeCredits += Math.floor(perf.audience / 5);
             }
 
+
+
             result.append("<tr>");
             result.append("<td colspan='3'>" + play.name + "</td>");
             result.append("<td colspan='3'>" + perf.audience + "</td>");
             result.append("<td colspan='3' class='price'>" + currencyFormatter.format(thisAmount) + "</td>"); // Appliquez la classe 'price' pour centrer les prix
             result.append("</tr>");
-
             totalAmount += thisAmount;
         }
+        int totalLoyaltyPoints = customer.getLoyaltyPoints(); // Get customer's loyalty points
+        if (totalLoyaltyPoints > 150) {
+            double discount = 15.0; // Apply a discount of 15€
+            totalAmount -= discount;
+            customer.deductLoyaltyPoints(150); // Deduct 150 points
+        }
+        totalLoyaltyPoints = customer.getLoyaltyPoints();
+
 
         result.append("<tr>");
         result.append("<td colspan='6' class='align-right'><b >Totlowned</b></td>");
@@ -74,6 +84,11 @@ public class HtmlStatementPrinter {
         result.append("<tr>");
         result.append("<td colspan='6' class='align-right'><b >Fidelity Points earned</b></td>");
         result.append("<td colspan='3' >" + volumeCredits + "</td>");
+        result.append("</tr>");
+
+        result.append("<tr>");
+        result.append("<td colspan='6' class='align-right'><b>Total Loyalty Points</b></td>");
+        result.append("<td colspan='3' class='price'>" + totalLoyaltyPoints + "</td>");
         result.append("</tr>");
 
         result.append("</table>");
