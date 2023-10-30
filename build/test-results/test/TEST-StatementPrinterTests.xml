@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="StatementPrinterTests" tests="6" skipped="0" failures="0" errors="0" timestamp="2023-10-30T19:58:01" hostname="DESKTOP-G1D1P25" time="0.288">
+<testsuite name="StatementPrinterTests" tests="7" skipped="0" failures="0" errors="0" timestamp="2023-10-30T20:08:10" hostname="DESKTOP-G1D1P25" time="0.321">
   <properties/>
-  <testcase name="testAudience20ForComedy()" classname="StatementPrinterTests" time="0.044"/>
-  <testcase name="exampleStatement()" classname="StatementPrinterTests" time="0.176"/>
-  <testcase name="testAudience20ForComedyhtml()" classname="StatementPrinterTests" time="0.01"/>
+  <testcase name="testAudience20ForComedy()" classname="StatementPrinterTests" time="0.053"/>
+  <testcase name="exampleStatement()" classname="StatementPrinterTests" time="0.193"/>
+  <testcase name="statementWithNewPlayTypes()" classname="StatementPrinterTests" time="0.005"/>
+  <testcase name="testAudience20ForComedyhtml()" classname="StatementPrinterTests" time="0.009"/>
   <testcase name="testAudience30ForTragedyhtml()" classname="StatementPrinterTests" time="0.001"/>
   <testcase name="testAudience30ForTragedy()" classname="StatementPrinterTests" time="0.001"/>
-  <testcase name="exampleHtmlStatement()" classname="StatementPrinterTests" time="0.053"/>
+  <testcase name="exampleHtmlStatement()" classname="StatementPrinterTests" time="0.056"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

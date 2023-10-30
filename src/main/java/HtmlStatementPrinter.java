@@ -36,13 +36,13 @@ public class HtmlStatementPrinter {
             double thisAmount = 0.0;
 
             switch (play.type) {
-                case "tragedy":
+                case TRAGEDY:
                     thisAmount = 400.00;
                     if (perf.audience > 30) {
                         thisAmount += 10.00 * (perf.audience - 30);
                     }
                     break;
-                case "comedy":
+                case COMEDY:
                     thisAmount = 300.00;
                     if (perf.audience > 20) {
                         thisAmount += 100.00 + 5.00 * (perf.audience - 20);
@@ -54,7 +54,7 @@ public class HtmlStatementPrinter {
             }
 
             volumeCredits += Math.max(perf.audience - 30, 0);
-            if ("comedy".equals(play.type)) {
+            if (PlayType.COMEDY.equals(play.type)) {
                 volumeCredits += Math.floor(perf.audience / 5);
             }
 

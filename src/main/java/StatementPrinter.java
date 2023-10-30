@@ -14,13 +14,13 @@ public class StatementPrinter {
       Play play = plays.get(perf.playID);
       double thisAmount = 0.0;
       switch (play.type) {
-        case "tragedy":
+        case TRAGEDY:
           thisAmount = 400.00; // Montant de base pour une tragédie en dollars avec des centimes
           if (perf.audience > 30) {
             thisAmount += 10.00 * (perf.audience - 30); // Ajouter 10 dollars par siège au-delà de 30
           }
           break;
-        case "comedy":
+        case COMEDY:
           thisAmount = 300.00; // Montant de base pour une comédie en dollars avec des centimes
           if (perf.audience > 20) {
             thisAmount += 100.00 + 5.00 * (perf.audience - 20); // Ajouter 100 dollars plus 5 dollars par siège au-delà de 20
@@ -34,7 +34,7 @@ public class StatementPrinter {
       // add volume credits
       volumeCredits += Math.max(perf.audience - 30, 0);
       // add extra credit for every ten comedy attendees
-      if ("comedy".equals(play.type)) volumeCredits += Math.floor(perf.audience / 5);
+      if (PlayType.COMEDY.equals(play.type)) volumeCredits += Math.floor(perf.audience / 5);
 
       // Ajouter une ligne au résultat avec le nom de la pièce, le montant et le nombre de sièges
       result.append(String.format("  %s: %s (%s seats)\n", play.name, currencyFormatter.format(thisAmount), perf.audience));
