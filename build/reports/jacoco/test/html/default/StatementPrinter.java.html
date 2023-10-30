@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>StatementPrinter.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">TheatricalPlayers</a> &gt; <a href="index.source.html" class="el_package">default</a> &gt; <span class="el_source">StatementPrinter.java</span></div><h1>StatementPrinter.java</h1><pre class="source lang-java linenums">import java.text.NumberFormat;
+import java.util.*;
+
+<span class="fc" id="L4">public class StatementPrinter {</span>
+
+  public String print(Invoice invoice, HashMap&lt;String, Play&gt; plays) {
+<span class="fc" id="L7">    double totalAmount = 0.0;</span>
+<span class="fc" id="L8">    int volumeCredits = 0;</span>
+<span class="fc" id="L9">    StringBuilder result = new StringBuilder();</span>
+<span class="fc" id="L10">    result.append(String.format(&quot;Statement for %s\n&quot;, invoice.customer));</span>
+
+<span class="fc" id="L12">    NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(Locale.US);</span>
+<span class="fc bfc" id="L13" title="All 2 branches covered.">    for (Performance perf : invoice.performances) {</span>
+<span class="fc" id="L14">      Play play = plays.get(perf.playID);</span>
+<span class="fc" id="L15">      double thisAmount = 0.0;</span>
+<span class="pc bpc" id="L16" title="1 of 3 branches missed.">      switch (play.type) {</span>
+        case &quot;tragedy&quot;:
+<span class="fc" id="L18">          thisAmount = 400.00; // Montant de base pour une tragأ©die en dollars avec des centimes</span>
+<span class="fc bfc" id="L19" title="All 2 branches covered.">          if (perf.audience &gt; 30) {</span>
+<span class="fc" id="L20">            thisAmount += 10.00 * (perf.audience - 30); // Ajouter 10 dollars par siأ¨ge au-delأ  de 30</span>
+          }
+          break;
+        case &quot;comedy&quot;:
+<span class="fc" id="L24">          thisAmount = 300.00; // Montant de base pour une comأ©die en dollars avec des centimes</span>
+<span class="fc bfc" id="L25" title="All 2 branches covered.">          if (perf.audience &gt; 20) {</span>
+<span class="fc" id="L26">            thisAmount += 100.00 + 5.00 * (perf.audience - 20); // Ajouter 100 dollars plus 5 dollars par siأ¨ge au-delأ  de 20</span>
+          }
+<span class="fc" id="L28">          thisAmount += 3.00 * perf.audience; // Ajouter 3 dollars par siأ¨ge</span>
+<span class="fc" id="L29">          break;</span>
+        default:
+<span class="nc" id="L31">          throw new Error(&quot;unknown type: ${play.type}&quot;);</span>
+      }
+
+      // add volume credits
+<span class="fc" id="L35">      volumeCredits += Math.max(perf.audience - 30, 0);</span>
+      // add extra credit for every ten comedy attendees
+<span class="fc bfc" id="L37" title="All 2 branches covered.">      if (&quot;comedy&quot;.equals(play.type)) volumeCredits += Math.floor(perf.audience / 5);</span>
+
+      // Ajouter une ligne au rأ©sultat avec le nom de la piأ¨ce, le montant et le nombre de siأ¨ges
+<span class="fc" id="L40">      result.append(String.format(&quot;  %s: %s (%s seats)\n&quot;, play.name, currencyFormatter.format(thisAmount), perf.audience));</span>
+<span class="fc" id="L41">      totalAmount += thisAmount; // Accumuler le montant total</span>
+<span class="fc" id="L42">    }</span>
+    // Ajouter le montant total dأ» et les crأ©dits gagnأ©s au rأ©sultat
+<span class="fc" id="L44">    result.append(String.format(&quot;Amount owed is %s\n&quot;, currencyFormatter.format(totalAmount)));</span>
+<span class="fc" id="L45">    result.append(String.format(&quot;You earned %s credits\n&quot;, volumeCredits));</span>
+
+<span class="fc" id="L47">    return result.toString(); // Retourner le rأ©sultat complet sous forme de chaأ®ne;</span>
+  }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

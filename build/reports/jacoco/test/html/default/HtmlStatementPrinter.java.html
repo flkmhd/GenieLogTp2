@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>HtmlStatementPrinter.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">TheatricalPlayers</a> &gt; <a href="index.source.html" class="el_package">default</a> &gt; <span class="el_source">HtmlStatementPrinter.java</span></div><h1>HtmlStatementPrinter.java</h1><pre class="source lang-java linenums">import java.text.NumberFormat;
+import java.util.HashMap;
+import java.util.Locale;
+
+<span class="fc" id="L5">public class HtmlStatementPrinter {</span>
+
+    public String print(Invoice invoice, HashMap&lt;String, Play&gt; plays) {
+<span class="fc" id="L8">        double totalAmount = 0.0;</span>
+<span class="fc" id="L9">        int volumeCredits = 0;</span>
+<span class="fc" id="L10">        StringBuilder result = new StringBuilder();</span>
+
+<span class="fc" id="L12">        result.append(&quot;&lt;html&gt;&lt;head&gt;&lt;title&gt;Invoice&lt;/title&gt;&lt;/head&gt;&lt;body&gt;&quot;);</span>
+<span class="fc" id="L13">        result.append(&quot;&lt;style&gt;&quot;);</span>
+<span class="fc" id="L14">        result.append(&quot;table { border-collapse: collapse; width: 50%; }&quot;);</span>
+<span class="fc" id="L15">        result.append(&quot;th, td { border: 2px double black; padding: 8px; text-align: center; }&quot;);</span>
+<span class="fc" id="L16">        result.append(&quot;th { border: 2px double black; padding: 8px; text-align: center; background-color: #f2f2f2; }&quot;);</span>
+<span class="fc" id="L17">        result.append(&quot;b { font-weight: bold; }&quot;);</span>
+<span class="fc" id="L18">        result.append(&quot;.align-right { text-align: right; }&quot;);</span>
+<span class="fc" id="L19">        result.append(&quot;.price { text-align: center; }&quot;);</span>
+<span class="fc" id="L20">        result.append(&quot;&lt;/style&gt;&quot;);</span>
+<span class="fc" id="L21">        result.append(&quot;&lt;h1&gt;Invoice&lt;/h1&gt;&quot;);</span>
+
+<span class="fc" id="L23">        result.append(&quot;&lt;p&gt;&lt;b&gt;Client:&lt;/b&gt; &quot; + invoice.customer + &quot;&lt;/p&gt;&quot;);</span>
+
+<span class="fc" id="L25">        NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(Locale.US);</span>
+
+<span class="fc" id="L27">        result.append(&quot;&lt;table&gt;&quot;);</span>
+<span class="fc" id="L28">        result.append(&quot;&lt;tr&gt;&quot;);</span>
+<span class="fc" id="L29">        result.append(&quot;&lt;th colspan='3'&gt;Piece&lt;/th&gt;&quot;);</span>
+<span class="fc" id="L30">        result.append(&quot;&lt;th colspan='3'&gt;Seats Sold&lt;/th&gt;&quot;);</span>
+<span class="fc" id="L31">        result.append(&quot;&lt;th colspan='3' class='price'&gt;Price&lt;/th&gt;&quot;);</span>
+<span class="fc" id="L32">        result.append(&quot;&lt;/tr&gt;&quot;);</span>
+
+<span class="fc bfc" id="L34" title="All 2 branches covered.">        for (Performance perf : invoice.performances) {</span>
+<span class="fc" id="L35">            Play play = plays.get(perf.playID);</span>
+<span class="fc" id="L36">            double thisAmount = 0.0;</span>
+
+<span class="pc bpc" id="L38" title="1 of 3 branches missed.">            switch (play.type) {</span>
+                case &quot;tragedy&quot;:
+<span class="fc" id="L40">                    thisAmount = 400.00;</span>
+<span class="pc bpc" id="L41" title="1 of 2 branches missed.">                    if (perf.audience &gt; 30) {</span>
+<span class="fc" id="L42">                        thisAmount += 10.00 * (perf.audience - 30);</span>
+                    }
+                    break;
+                case &quot;comedy&quot;:
+<span class="fc" id="L46">                    thisAmount = 300.00;</span>
+<span class="pc bpc" id="L47" title="1 of 2 branches missed.">                    if (perf.audience &gt; 20) {</span>
+<span class="fc" id="L48">                        thisAmount += 100.00 + 5.00 * (perf.audience - 20);</span>
+                    }
+<span class="fc" id="L50">                    thisAmount += 3.00 * perf.audience;</span>
+<span class="fc" id="L51">                    break;</span>
+                default:
+<span class="nc" id="L53">                    throw new Error(&quot;unknown type: &quot; + play.type);</span>
+            }
+
+<span class="fc" id="L56">            volumeCredits += Math.max(perf.audience - 30, 0);</span>
+<span class="fc bfc" id="L57" title="All 2 branches covered.">            if (&quot;comedy&quot;.equals(play.type)) {</span>
+<span class="fc" id="L58">                volumeCredits += Math.floor(perf.audience / 5);</span>
+            }
+
+<span class="fc" id="L61">            result.append(&quot;&lt;tr&gt;&quot;);</span>
+<span class="fc" id="L62">            result.append(&quot;&lt;td colspan='3'&gt;&quot; + play.name + &quot;&lt;/td&gt;&quot;);</span>
+<span class="fc" id="L63">            result.append(&quot;&lt;td colspan='3'&gt;&quot; + perf.audience + &quot;&lt;/td&gt;&quot;);</span>
+<span class="fc" id="L64">            result.append(&quot;&lt;td colspan='3' class='price'&gt;&quot; + currencyFormatter.format(thisAmount) + &quot;&lt;/td&gt;&quot;); // Appliquez la classe 'price' pour centrer les prix</span>
+<span class="fc" id="L65">            result.append(&quot;&lt;/tr&gt;&quot;);</span>
+
+<span class="fc" id="L67">            totalAmount += thisAmount;</span>
+<span class="fc" id="L68">        }</span>
+
+<span class="fc" id="L70">        result.append(&quot;&lt;tr&gt;&quot;);</span>
+<span class="fc" id="L71">        result.append(&quot;&lt;td colspan='6' class='align-right'&gt;&lt;b &gt;Totlowned&lt;/b&gt;&lt;/td&gt;&quot;);</span>
+<span class="fc" id="L72">        result.append(&quot;&lt;td colspan='3' &gt;&quot; + currencyFormatter.format(totalAmount) + &quot;&lt;/td&gt;&quot;);</span>
+<span class="fc" id="L73">        result.append(&quot;&lt;/tr&gt;&quot;);</span>
+<span class="fc" id="L74">        result.append(&quot;&lt;tr&gt;&quot;);</span>
+<span class="fc" id="L75">        result.append(&quot;&lt;td colspan='6' class='align-right'&gt;&lt;b &gt;Fidelity Points earned&lt;/b&gt;&lt;/td&gt;&quot;);</span>
+<span class="fc" id="L76">        result.append(&quot;&lt;td colspan='3' &gt;&quot; + volumeCredits + &quot;&lt;/td&gt;&quot;);</span>
+<span class="fc" id="L77">        result.append(&quot;&lt;/tr&gt;&quot;);</span>
+
+<span class="fc" id="L79">        result.append(&quot;&lt;/table&gt;&quot;);</span>
+<span class="fc" id="L80">        result.append(&quot;&lt;p&gt;Payment is required under 30 days. We can break your knees if you don't do so.&lt;/p&gt;&quot;);</span>
+
+<span class="fc" id="L82">        result.append(&quot;&lt;/body&gt;&lt;/html&gt;&quot;);</span>
+
+<span class="fc" id="L84">        return result.toString();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
